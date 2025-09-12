@@ -1,26 +1,26 @@
-// Importe o pacote do "express"
+
 const express = require('express');
 
-// Crie o array em memória "tarefas"
+
 const tarefas = [
     { id: 1, nome: "Estudar middleware", concluida: false },
     { id: 2, nome: "Praticar Express", concluida: true }
 ];
 
-// Crie uma instância de uma aplicação Express
+
 const app = express();
 
 // Utilize o middleware express.json()
 app.use(express.json());
 
-// Crie um middleware de aplicação para log
+
 app.use((req, res, next) => {
     const dataHora = new Date().toLocaleString();
     console.log(`[${dataHora}] Requisição: ${req.method} ${req.url}`);
     next();
 });
 
-// Crie um roteador específico para tarefas
+
 const router = express.Router();
 
 // Rota GET /tarefas
@@ -42,7 +42,7 @@ router.get('/:tarefaId', (req, res, next) => {
 
     if (!tarefa) {
         // Se a tarefa não for encontrada, chame o próximo middleware com um erro
-        // **Este é o ponto crucial para o seu problema**
+        
         return next({ message: "Tarefa não localizada" });
     }
     
@@ -86,7 +86,7 @@ app.use((err, req, res, next) => {
     if (err.message === "Tarefa não localizada") {
         return res.status(400).json({ mensagem: err.message });
     }
-    // Caso seja outro erro, o Express vai lidar com ele, mas é bom ter uma mensagem genérica
+   
     res.status(500).json({ mensagem: "Erro interno do servidor." });
 });
 
